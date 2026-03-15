@@ -13,7 +13,10 @@ import {
   Users,
   Church,
   Target,
+  Phone,
   GraduationCap,
+  Calendar,
+  PartyPopper,
   X,
 } from 'lucide-react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
@@ -95,41 +98,50 @@ export default function SchoolDetailScreen() {
         </View>
       </View>
 
-      {/* Image Section */}
-      <View
-        className="bg-white border-b border-gray-200 items-center justify-center"
-        style={{ height: screenHeight * 0.25 }}
-      >
-        {school.image ? (
-          <Animated.Image
-            source={{ uri: school.image }}
-            className="w-full h-full"
-            resizeMode="cover"
-          />
-        ) : (
-          <View className="items-center">
-            <View
-              className="w-20 h-20 rounded-2xl items-center justify-center mb-3"
-              style={{ backgroundColor: school.color + '15' }}
-            >
-              <GraduationCap size={40} color={school.color} />
-            </View>
-            <Text className="text-gray-400 text-lg">Image to be added</Text>
-            <Text className="text-sm font-bold mt-1" style={{ color: school.color }}>
-              {school.abbreviation}
-            </Text>
-          </View>
-        )}
-      </View>
+      {/* Desktop Responsive Split Container */}
+      <View className="flex-1 lg:flex-row lg:max-w-7xl lg:mx-auto w-full">
+        {/* School Image Placeholder - 100% width on Mobile, 40% Width on Desktop */}
+        <View
+          className="bg-white border-b lg:border-r border-gray-200 items-center justify-center lg:w-2/5"
+          style={{ height: screenHeight * 0.33, ...(screenHeight > 768 ? { height: '100%'} : {}) }}
+        >
+          {school.image ? (
+            <Animated.Image
+              source={{ uri: school.image }}
+              className="w-full h-full lg:rounded-l-2xl"
+              resizeMode="cover"
+            />
+          ) : (
+             <View className="items-center">
+               <GraduationCap size={72} color="#d1d5db" strokeWidth={1.5} />
+               <Text className="text-gray-400 text-lg mt-3">School Image</Text>
+             </View>
+          )}
+        </View>
 
-      {/* Scrollable Content */}
-      <ScrollView
-        className="flex-1"
-        contentContainerStyle={{ paddingBottom: insets.bottom + 24 }}
-        showsVerticalScrollIndicator={false}
-      >
-        <View className="px-4 py-6">
-          {/* Administration Section */}
+        {/* Scrollable Content - Full width on mobile, 60% on desktop */}
+        <ScrollView
+          className="flex-1 lg:w-3/5"
+          contentContainerStyle={{ paddingBottom: insets.bottom + 24 }}
+          showsVerticalScrollIndicator={false}
+        >
+          <View className="px-4 py-6">
+            {/* School Name & Level */}
+            <Animated.View
+              entering={FadeInDown.delay(100)}
+              className="bg-white rounded-2xl p-6 mb-4"
+            >
+              <Text className="text-3xl font-bold text-gray-900 text-center mb-3">
+                {school.name}
+              </Text>
+              <View className="items-center">
+                <View className="bg-gray-100 px-4 py-2 rounded-full">
+                  <Text className="text-lg text-gray-600">
+                    {school.category}
+                  </Text>
+                </View>
+              </View>
+            </Animated.View>          {/* Administration Section */}
           <Animated.View
             entering={FadeInDown.delay(100)}
             className="bg-white rounded-2xl p-5 mb-4"
@@ -362,8 +374,9 @@ export default function SchoolDetailScreen() {
               Est. {school.foundingYear}
             </Text>
           </Animated.View>
-        </View>
-      </ScrollView>
+          </View>
+        </ScrollView>
+      </View>
     </View>
   );
 }

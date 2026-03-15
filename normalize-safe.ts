@@ -49,12 +49,12 @@ for (const file of chunkFiles) {
 
   for (const [oldName, exactTarget] of Object.entries(exactMapping)) {
     // Check various string literal syntaxes cautiously
-    const singleQ = \`parish: '\${oldName}'\`;
-    const doubleQ = \`parish: "\${oldName}"\`;
-    const backtickQ = \`parish: \\\`\${oldName}\\\`\`;
+    const singleQ = `parish: '${oldName}'`;
+    const doubleQ = `parish: "${oldName}"`;
+    const backtickQ = `parish: \`${oldName}\``;
     
     // Safety check: ensure target name doesn't have quotes inside
-    const replacement = \`parish: '\${exactTarget.replace(/'/g, "\\\\'")}'\`;
+    const replacement = `parish: '${exactTarget.replace(/'/g, "\\'")}'`;
 
     if (content.includes(singleQ)) {
       content = content.split(singleQ).join(replacement);
@@ -73,8 +73,8 @@ for (const file of chunkFiles) {
   if (fileChanges > 0) {
     fs.writeFileSync(filePath, content);
     totalReplacements += fileChanges;
-    console.log(\`Updated \${fileChanges} distinct matches in \${file}\`);
+    console.log(`Updated ${fileChanges} distinct matches in ${file}`);
   }
 }
 
-console.log(\`\\nDone! Replaced \${totalReplacements} misaligned parish entries using strict mapping.\`);
+console.log(`\nDone! Replaced ${totalReplacements} misaligned parish entries using strict mapping.`);
