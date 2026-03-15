@@ -239,21 +239,26 @@ export default function ParishDetailScreen() {
           </Animated.View>
 
           {/* GKKs */}
-          <Animated.View
-            entering={FadeInDown.delay(400)}
-            className="bg-white rounded-2xl p-5 mb-4"
-          >
-            <View className="flex-row">
-              <Users size={24} color="#9ca3af" className="mt-0.5 flex-shrink-0" />
-              <View className="flex-1 ml-3">
-                <Text className="text-lg text-gray-500 mb-1">GKKs</Text>
-                {parish.gkkCount ? (
-                  <Text className="text-xl text-gray-900 font-semibold">{parish.gkkCount} GKKs</Text>
-                ) : (
-                  <Text className="text-gray-400 text-lg italic">To be added</Text>
-                )}
+          <Animated.View entering={FadeInDown.delay(400)}>
+            <Pressable
+              onPress={() => router.push(`/bec?parish=${encodeURIComponent(parish.name)}`)}
+              className="bg-white rounded-2xl p-5 mb-4 active:bg-gray-50 flex-row items-center border border-gray-100"
+              style={{ shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.06, shadowRadius: 4, elevation: 1 }}
+            >
+              <View className="flex-row flex-1">
+                <Users size={24} color="#3b82f6" className="mt-0.5 flex-shrink-0" />
+                <View className="flex-1 ml-3">
+                  <Text className="text-lg text-gray-500 mb-1">GKKs</Text>
+                  {parish.gkkCount ? (
+                    <Text className="text-xl text-gray-900 font-semibold">{parish.gkkCount} GKKs</Text>
+                  ) : (
+                    <Text className="text-gray-400 text-lg italic">To be added</Text>
+                  )}
+                  <Text className="text-lg text-blue-500 mt-2">Tap to view GKK directory</Text>
+                </View>
               </View>
-            </View>
+              <ChevronRight size={24} color="#9ca3af" />
+            </Pressable>
           </Animated.View>
 
           {/* Blueprint */}

@@ -352,18 +352,7 @@ function DetailView({ hazardKey, onBack }: { hazardKey: HazardKey; onBack: () =>
 
       {/* Map view */}
       {view === 'map' && (
-        <WebView
-          style={{ flex: 1 }}
-          source={{ html }}
-          javaScriptEnabled
-          domStorageEnabled
-          originWhitelist={['*']}
-          mixedContentMode="always"
-          allowUniversalAccessFromFileURLs
-          scrollEnabled={false}
-          showsHorizontalScrollIndicator={false}
-          showsVerticalScrollIndicator={false}
-        />
+        <MapWebView html={html} />
       )}
 
       {/* List view */}

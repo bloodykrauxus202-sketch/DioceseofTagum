@@ -11,7 +11,7 @@ import {
   Modal,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useRouter } from 'expo-router';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import {
   ChevronRight,
   MapPin,
@@ -478,9 +478,11 @@ const GKKCard = ({ gkk, onPress, index }: { gkk: GKK; onPress: () => void; index
 export default function GKKDirectory() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
+  const { parish } = useLocalSearchParams<{ parish?: string }>();
+  
   const [selectedGKK, setSelectedGKK] = useState<GKK | null>(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [sortBy, setSortBy] = useState<'alphabetical' | 'parish' | 'vicariate'>('alphabetical');
+  const [searchQuery, setSearchQuery] = useState(parish ? decodeURIComponent(parish) : '');
+  const [sortBy, setSortBy] = useState<'alphabetical' | 'parish' | 'vicariate'>(parish ? 'parish' : 'alphabetical');
   const [view, setView] = useState<'list' | 'map'>('list');
 
   // ── Filtered + sorted list ──────────────────────────────────────────────────
