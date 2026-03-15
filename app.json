@@ -1,0 +1,35 @@
+{
+  "expo": {
+    "name": "DATOS",
+    "slug": "datos",
+    "scheme": [
+      "vibecode",
+      "com.googleusercontent.apps.1087705723094-bd6qjn1eplc0gvhjf3s5bh91i9tf4lrj",
+      "fb6174008472817851"
+    ],
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.datos.directory",
+      "buildNumber": "4",
+      "requireFullScreen": true,
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "infoPlist": {}
+    },
+    "android": {
+      "edgeToEdgeEnabled": true,
+      "package": "com.dioceseoftagum.datos",
+      "googleServicesFile": "./google-services.json"
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "icon": "./icon.png"
+  }
+}
