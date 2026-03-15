@@ -32,8 +32,8 @@ const DIRECTORY_ITEMS = [
   { id: 14, uri: 'https://images.composerapi.com/019c1d10-9a1d-732f-93cc-606c5e55b508/assets/images/diocesan_events_1770968311161_019c55ef-e579-751d-bfe3-4f80fb82267b.png', label: 'Diocesan Events' },
   { id: 15, uri: 'https://images.composerapi.com/019c1d10-9a1d-732f-93cc-606c5e55b508/assets/images/daditama_events_1770968311155_019c55ef-e573-720d-a64e-b7ab1db2fbc1.png', label: 'Daditama Events' },
   // Row 6
-  { id: 16, uri: require('@/assets/images/pastoral.jpg') as number, label: 'Pastoral' },
-  { id: 17, uri: require('@/assets/images/disaster_management.jpg') as number, label: 'Disaster Management' },
+  { id: 16, uri: require('@/assets/images/pastoral.jpg'), label: 'Pastoral' },
+  { id: 17, uri: require('@/assets/images/disaster_management.jpg'), label: 'Disaster Management' },
 ];
 
 export default function HomeScreen() {
@@ -229,7 +229,7 @@ export default function HomeScreen() {
             >
               {item.uri ? (
                 <Image
-                  source={typeof item.uri === 'number' ? item.uri : { uri: item.uri as string }}
+                  source={typeof item.uri === 'string' ? { uri: item.uri } : item.uri}
                   className="w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32"
                   resizeMode="contain"
                 />

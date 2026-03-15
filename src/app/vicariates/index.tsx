@@ -204,43 +204,29 @@ export default function VicariatesScreen() {
             </View>
           </View>
 
-          {/* List / Map toggle — large and prominent */}
-          <View style={{
-            flexDirection: 'row',
-            backgroundColor: '#e0e7ff',
-            borderRadius: 14,
-            padding: 4,
-            gap: 2,
-          }}>
+          {/* List/Map Toggle */}
+          <View style={{ flexDirection: 'row', backgroundColor: '#f3f4f6', borderRadius: 10, padding: 3, gap: 2 }}>
             <Pressable
               onPress={() => setView('list')}
               style={{
-                flexDirection: 'row', alignItems: 'center', gap: 7,
-                paddingHorizontal: 22, paddingVertical: 12, borderRadius: 10,
+                flexDirection: 'row', alignItems: 'center', gap: 5,
+                paddingHorizontal: 10, paddingVertical: 5, borderRadius: 8,
                 backgroundColor: view === 'list' ? '#fff' : 'transparent',
-                shadowColor: view === 'list' ? '#000' : 'transparent',
-                shadowOpacity: view === 'list' ? 0.08 : 0,
-                shadowRadius: 4,
-                elevation: view === 'list' ? 2 : 0,
               }}
             >
-              <List size={24} color={view === 'list' ? '#1d4ed8' : '#6b7280'} strokeWidth={2.2} />
-              <Text style={{ fontSize: 21, fontWeight: '700', color: view === 'list' ? '#1d4ed8' : '#6b7280' }}>List</Text>
+              <List size={16} color={view === 'list' ? '#1d4ed8' : '#9ca3af'} />
+              <Text style={{ fontSize: 17, fontWeight: '600', color: view === 'list' ? '#1d4ed8' : '#9ca3af' }}>List</Text>
             </Pressable>
             <Pressable
               onPress={() => setView('map')}
               style={{
-                flexDirection: 'row', alignItems: 'center', gap: 7,
-                paddingHorizontal: 22, paddingVertical: 12, borderRadius: 10,
+                flexDirection: 'row', alignItems: 'center', gap: 5,
+                paddingHorizontal: 10, paddingVertical: 5, borderRadius: 8,
                 backgroundColor: view === 'map' ? '#fff' : 'transparent',
-                shadowColor: view === 'map' ? '#000' : 'transparent',
-                shadowOpacity: view === 'map' ? 0.08 : 0,
-                shadowRadius: 4,
-                elevation: view === 'map' ? 2 : 0,
               }}
             >
-              <Map size={24} color={view === 'map' ? '#1d4ed8' : '#6b7280'} strokeWidth={2.2} />
-              <Text style={{ fontSize: 21, fontWeight: '700', color: view === 'map' ? '#1d4ed8' : '#6b7280' }}>Map</Text>
+              <Map size={16} color={view === 'map' ? '#1d4ed8' : '#9ca3af'} />
+              <Text style={{ fontSize: 17, fontWeight: '600', color: view === 'map' ? '#1d4ed8' : '#9ca3af' }}>Map</Text>
             </Pressable>
           </View>
         </View>
