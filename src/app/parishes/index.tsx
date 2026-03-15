@@ -12,6 +12,7 @@ import {
   searchParishes,
 } from '@/lib/data/parish-directory';
 import { getParishIconUrl } from '@/lib/data/parish-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
@@ -102,11 +103,11 @@ export default function ParishListScreen() {
   const [activeTab, setActiveTab] = useState<string>('all');
   const [view, setView] = useState<'list' | 'map'>('list');
 
-  const horizontalPadding = 12;
-  const gap = 8;
+  const horizontalPadding = 8;
+  const gap = 6;
   const columns = 3;
-  // Subtract 16px buffer to safely account for Windows web browser vertical scrollbars which artificially shrink the viewport and cause flex-wrap drops
-  const gridItemWidth = (screenWidth - 16 - (horizontalPadding * 2) - (gap * (columns - 1))) / columns;
+  // Make absolutely sure our column width handles mobile subpixel margins properly for a pure 3x3 fit.
+  const gridItemWidth = (screenWidth - (horizontalPadding * 2) - (gap * (columns - 1)) - 6) / columns;
 
   const filteredParishes = useMemo(() => {
     let result = parishes;
@@ -131,9 +132,14 @@ export default function ParishListScreen() {
   const mapHtml = useMemo(() => buildParishMapHtml(filteredParishes), [filteredParishes]);
 
   return (
-    <View className="flex-1 bg-gray-50">
+    <LinearGradient
+      colors={['rgba(20, 184, 166, 0.3)', 'rgba(59, 130, 246, 0.3)']}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      className="flex-1"
+    >
       {/* Header */}
-      <View className="bg-white border-b border-gray-200" style={{ paddingTop: insets.top }}>
+      <View className="bg-white/80 border-b border-gray-200/50" style={{ paddingTop: insets.top }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12, paddingVertical: 10 }}>
           <Pressable onPress={() => router.back()} style={{ padding: 6, borderRadius: 999 }}>
             <ChevronLeft size={24} color="#4b5563" />
@@ -245,21 +251,25 @@ export default function ParishListScreen() {
         >
           {filteredParishes.length === 0 ? (
             <Animated.View entering={FadeIn} className="items-center justify-center py-20">
-              <Church size={56} color="#d1d5db" />
-              <Text className="text-gray-400 text-2xl mt-4">No parishes found</Text>
+              <Church size={56} color="#475569" />
+              <Text className="text-gray-500 text-2xl mt-4">No parishes found</Text>
             </Animated.View>
           ) : (
             <View className="flex-row flex-wrap" style={{ gap }}>
               {filteredParishes.map((parish, index) => {
                 const iconUrl = getParishIconUrl(parish.name, parish.location);
-                const imageSize = gridItemWidth - 20;
+                const imageSize = gridItemWidth - 16;
                 return (
                   <AnimatedPressable
                     key={parish.id}
                     entering={FadeInDown.delay(index * 20).springify()}
                     onPress={() => handleParishPress(parish.id)}
-                    className="bg-white rounded-xl items-center justify-start active:bg-gray-50 border border-gray-100"
-                    style={{ width: gridItemWidth, padding: 10 }}
+                    className="rounded-xl items-center justify-start active:opacity-70 border border-white/50"
+                    style={{
+                      width: gridItemWidth,
+                      padding: 8,
+                      backgroundColor: 'rgba(255, 255, 255, 0.45)',
+                    }}
                   >
                     {iconUrl ? (
                       <Image
@@ -268,16 +278,16 @@ export default function ParishListScreen() {
                         resizeMode="cover"
                       />
                     ) : (
-                      <View style={{ width: imageSize, height: imageSize, borderRadius: 10, backgroundColor: '#eff6ff', alignItems: 'center', justifyContent: 'center' }}>
-                        <Church size={imageSize * 0.5} color="#3b82f6" strokeWidth={1.5} />
+                      <View style={{ width: imageSize, height: imageSize, borderRadius: 10, backgroundColor: 'rgba(239, 246, 255, 0.7)', alignItems: 'center', justifyContent: 'center' }}>
+                        <Church size={imageSize * 0.45} color="#3b82f6" strokeWidth={1.5} />
                       </View>
                     )}
-                    <Text className="text-sm text-gray-900 text-center mt-2 leading-tight font-bold" numberOfLines={3} style={{ width: '100%' }}>
+                    <Text className="text-gray-900 text-center mt-2 leading-tight font-bold" numberOfLines={2} style={{ width: '100%', fontSize: 13 }}>
                       {parish.name}
                     </Text>
                     <View className="flex-row items-center mt-1" style={{ width: '100%' }}>
-                      <MapPin size={9} color="#9ca3af" style={{ flexShrink: 0 }} />
-                      <Text className="text-sm text-gray-500 ml-1" numberOfLines={1} style={{ flex: 1 }}>
+                      <MapPin size={9} color="#4b5563" style={{ flexShrink: 0 }} />
+                      <Text className="text-gray-600 ml-1" numberOfLines={1} style={{ flex: 1, fontSize: 11 }}>
                         {parish.location}
                       </Text>
                     </View>
@@ -292,7 +302,7 @@ export default function ParishListScreen() {
       {/* MAP VIEW */}
       {view === 'map' && (
         <View style={{ flex: 1 }}>
-          <View style={{ backgroundColor: '#eff6ff', borderBottomWidth: 1, borderBottomColor: '#bfdbfe', paddingHorizontal: 16, paddingVertical: 10 }}>
+          <View style={{ backgroundColor: 'rgba(239, 246, 255, 0.8)', borderBottomWidth: 1, borderBottomColor: 'rgba(191, 219, 254, 0.5)', paddingHorizontal: 16, paddingVertical: 10 }}>
             <Text style={{ fontSize: 17, color: '#1d4ed8', textAlign: 'center', fontWeight: '600' }}>
               Tap a dot to see parish details
             </Text>
@@ -302,6 +312,6 @@ export default function ParishListScreen() {
       )}
 
       <BottomNavBar />
-    </View>
+    </LinearGradient>
   );
 }
