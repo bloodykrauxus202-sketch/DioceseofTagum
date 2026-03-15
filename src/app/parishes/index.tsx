@@ -105,7 +105,8 @@ export default function ParishListScreen() {
   const horizontalPadding = 12;
   const gap = 8;
   const columns = 3;
-  const gridItemWidth = (screenWidth - (horizontalPadding * 2) - (gap * (columns - 1))) / columns;
+  // Subtract 16px buffer to safely account for Windows web browser vertical scrollbars which artificially shrink the viewport and cause flex-wrap drops
+  const gridItemWidth = (screenWidth - 16 - (horizontalPadding * 2) - (gap * (columns - 1))) / columns;
 
   const filteredParishes = useMemo(() => {
     let result = parishes;
