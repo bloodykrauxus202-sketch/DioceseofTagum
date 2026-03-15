@@ -241,7 +241,7 @@ export default function ParishDetailScreen() {
           {/* GKKs */}
           <Animated.View entering={FadeInDown.delay(400)}>
             <Pressable
-              onPress={() => router.push(`/bec?parish=${encodeURIComponent(parish.name)}`)}
+              onPress={() => router.push(`/parish-gkks/${parish.id}`)}
               className="bg-white rounded-2xl p-5 mb-4 active:bg-gray-50 flex-row items-center border border-gray-100"
               style={{ shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.06, shadowRadius: 4, elevation: 1 }}
             >

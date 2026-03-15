@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1087705723094",
+    "project_id": "datos-e5fe7",
+    "storage_bucket": "datos-e5fe7.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1087705723094:android:a4ad8fea936161efdc1977",
+        "android_client_info": {
+          "package_name": "com.dioceseoftagum.datos"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3z-G0YWW55Gmdd3GAZArwKjarp-UNSbE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
