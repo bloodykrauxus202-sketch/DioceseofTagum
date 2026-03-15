@@ -55,6 +55,8 @@ function gkkNameComparator(a: GKK, b: GKK): number {
   return a.name.localeCompare(b.name, 'en', { sensitivity: 'base' });
 }
 
+const IS_ASSUMPTION_ACADEMY = (v: string) => v === 'Assumption Academy of Mawab, Inc' || v.includes('Assumption Academy of Mawab');
+
 /**
  * Same but for any string key (parish / vicariate).
  */
@@ -62,6 +64,15 @@ function keyComparator(key: keyof GKK) {
   return (a: GKK, b: GKK): number => {
     const av = String(a[key] ?? '');
     const bv = String(b[key] ?? '');
+    
+    // Custom exception forcing Assumption Academy to sort absolutely last
+    if (key === 'parish') {
+      const aExempt = IS_ASSUMPTION_ACADEMY(av);
+      const bExempt = IS_ASSUMPTION_ACADEMY(bv);
+      if (aExempt && !bExempt) return 1;
+      if (!aExempt && bExempt) return -1;
+    }
+
     const aLetter = startsWithLetter(av);
     const bLetter = startsWithLetter(bv);
     if (aLetter && !bLetter) return -1;
@@ -530,9 +541,16 @@ export default function GKKDirectory() {
         if (!map[k]) map[k] = [];
         map[k].push(gkk);
       });
-      // Sort group keys: letters first, then symbols
+      // Sort group keys: letters first, then symbols (with Assumption Academy exception)
       Object.keys(map)
         .sort((a, b) => {
+          if (sortBy === 'parish') {
+            const aExempt = IS_ASSUMPTION_ACADEMY(a);
+            const bExempt = IS_ASSUMPTION_ACADEMY(b);
+            if (aExempt && !bExempt) return 1;
+            if (!aExempt && bExempt) return -1;
+          }
+
           const al = startsWithLetter(a), bl = startsWithLetter(b);
           if (al && !bl) return -1;
           if (!al && bl) return 1;

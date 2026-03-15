@@ -12,7 +12,6 @@ import {
   searchParishes,
 } from '@/lib/data/parish-directory';
 import { getParishIconUrl } from '@/lib/data/parish-icons';
-import { LinearGradient } from 'expo-linear-gradient';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
@@ -136,12 +135,7 @@ export default function ParishListScreen() {
   const mapHtml = useMemo(() => buildParishMapHtml(filteredParishes), [filteredParishes]);
 
   return (
-    <LinearGradient
-      colors={['rgba(20, 184, 166, 0.3)', 'rgba(59, 130, 246, 0.3)']}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-      className="flex-1"
-    >
+    <View className="flex-1 bg-[#f9fafb]">
       {/* Header */}
       <View className="bg-white/80 border-b border-gray-200/50" style={{ paddingTop: insets.top }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12, paddingVertical: 10 }}>
@@ -272,11 +266,10 @@ export default function ParishListScreen() {
                     key={parish.id}
                     entering={FadeInDown.delay(index * 20).springify()}
                     onPress={() => handleParishPress(parish.id)}
-                    className="rounded-xl items-center justify-start active:opacity-70 border border-white/50"
+                    className="rounded-xl items-center justify-start active:opacity-70"
                     style={{
                       width: gridItemWidth,
                       padding: 8,
-                      backgroundColor: 'rgba(255, 255, 255, 0.45)',
                     }}
                   >
                     {iconUrl ? (
@@ -320,6 +313,6 @@ export default function ParishListScreen() {
       )}
 
       <BottomNavBar />
-    </LinearGradient>
+    </View>
   );
 }
