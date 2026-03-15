@@ -35,13 +35,86 @@ const ORBIT_ICONS = [
   { id: 9, uri: 'https://images.composerapi.com/019c1d10-9a1d-732f-93cc-606c5e55b508/assets/images/corporations_1770014166668_019c1d10-ce8c-75b1-b04f-5e8b0c50bfe9.png', label: 'Corporations' },
 ];
 
-// Provide randomly generated positions across the screen
-function generateRandomLocations(count: number) {
-  return Array.from({ length: count }).map(() => ({
-    x: 0.05 + Math.random() * 0.85, // 5% to 90%
-    y: 0.05 + Math.random() * 0.85, // 5% to 90%
-    delay: Math.random() * 400 // Random stagger up to 400ms
-  }));
+// Provide randomly generated positions across the screen while strictly avoiding text/logo
+function generateRandomLocations(count: number, screenW: number, screenH: number, iconSize: number) {
+  const locs: {x: number, y: number, delay: number}[] = [];
+  
+  const isOverlap = (px: number, py: number) => {
+    const ix = px * (screenW - iconSize);
+    const iy = py * (screenH - iconSize);
+    const r1 = { x: ix, y: iy, w: iconSize, h: iconSize };
+    
+    const check = (r2: {x: number, y: number, w: number, h: number}) => {
+      const buffer = 12; // 12px padding around sacred objects
+      return !(r1.x + r1.w + buffer < r2.x || r1.x - buffer > r2.x + r2.w || r1.y + r1.h + buffer < r2.y || r1.y - buffer > r2.y + r2.h);
+    };
+
+    // 1. Text Area (Top Center)
+    const textZone = { 
+      x: screenW * 0.05, 
+      y: screenH * 0.03, 
+      w: screenW * 0.9, 
+      h: screenH * 0.30 
+    };
+    if (check(textZone)) return true;
+
+    // 2. Center Logo
+    const logoSize = Math.min(screenW * 0.85, screenH * 0.75);
+    // Use 75% of logoSize for collision since the PNG is a circle with transparent corners
+    const hitSize = logoSize * 0.75;
+    const logoZone = {
+      x: (screenW - hitSize) / 2,
+      y: (screenH - hitSize) / 2,
+      w: hitSize,
+      h: hitSize
+    };
+    if (check(logoZone)) return true;
+
+    // 3. Bottom Button
+    const btnZone = {
+      x: screenW * 0.1,
+      y: screenH - 120,
+      w: screenW * 0.8,
+      h: 100
+    };
+    if (check(btnZone)) return true;
+
+    // 4. Other icons (prevent icons from stacking on each other)
+    for (const l of locs) {
+      if (check({
+        x: l.x * (screenW - iconSize),
+        y: l.y * (screenH - iconSize),
+        w: iconSize,
+        h: iconSize
+      })) return true;
+    }
+
+    return false;
+  };
+
+  for (let i = 0; i < count; i++) {
+    let attempts = 0;
+    let valid = false;
+    let px = -10, py = -10; // If impossible to place safely, throw off-screen
+
+    while (!valid && attempts < 300) {
+      const testX = Math.random();
+      const testY = Math.random();
+      if (!isOverlap(testX, testY)) {
+        px = testX;
+        py = testY;
+        valid = true;
+      }
+      attempts++;
+    }
+    
+    locs.push({
+      x: px,
+      y: py,
+      delay: Math.random() * 400
+    });
+  }
+  return locs;
 }
 
 function shuffleArray<T>(array: T[]): T[] {
@@ -169,7 +242,7 @@ export default function WelcomeScreen() {
     const triggerNewCycle = () => {
       setCycle(c => c + 1);
       setShuffledIcons(shuffleArray(ORBIT_ICONS));
-      setShuffledPositions(generateRandomLocations(ORBIT_ICONS.length));
+      setShuffledPositions(generateRandomLocations(ORBIT_ICONS.length, screenWidth, screenHeight, iconSize));
     };
 
     // Trigger immediately
@@ -208,99 +281,37 @@ export default function WelcomeScreen() {
       withTiming(1, { duration: 400, easing: Easing.inOut(Easing.ease) })
     ));
 
-    // Start picking random animations after the initial entrance finishes (delay ~1.2s)
+    // Minimal, reverent church animations
     const animInterval = setInterval(() => {
-      const effect = Math.floor(Math.random() * 10);
+      const effect = Math.floor(Math.random() * 4);
       switch (effect) {
-        case 0: // Wobble
-          logoRotation.value = withSequence(
-            withTiming(-15, { duration: 150 }),
-            withTiming(15, { duration: 150 }),
-            withTiming(-10, { duration: 150 }),
-            withTiming(10, { duration: 150 }),
-            withTiming(0, { duration: 150 })
-          );
-          break;
-        case 1: // Heartbeat
-          logoScale.value = withSequence(
-            withTiming(1.15, { duration: 200 }),
-            withTiming(1, { duration: 200 }),
-            withTiming(1.15, { duration: 200 }),
-            withTiming(1, { duration: 200 })
-          );
-          break;
-        case 2: // Bounce
+        case 0: // Gentle Float Up
           logoTranslateY.value = withSequence(
-            withTiming(-40, { duration: 250, easing: Easing.out(Easing.ease) }),
-            withTiming(0, { duration: 400, easing: Easing.bounce })
+            withTiming(-12, { duration: 1500, easing: Easing.inOut(Easing.ease) }),
+            withTiming(0, { duration: 1500, easing: Easing.inOut(Easing.ease) })
           );
           break;
-        case 3: // Shake
-          logoTranslateX.value = withSequence(
-            withTiming(-20, { duration: 100 }),
-            withTiming(20, { duration: 100 }),
-            withTiming(-20, { duration: 100 }),
-            withTiming(20, { duration: 100 }),
-            withTiming(0, { duration: 100 })
-          );
-          break;
-        case 4: // Elastic Pop
+        case 1: // Spiritual Pulse (Slow Heartbeat)
           logoScale.value = withSequence(
-            withTiming(0.8, { duration: 200 }),
-            withSpring(1.1, { damping: 5, stiffness: 100 }),
-            withTiming(1, { duration: 200 })
+            withTiming(1.03, { duration: 1500, easing: Easing.inOut(Easing.ease) }),
+            withTiming(1, { duration: 1500, easing: Easing.inOut(Easing.ease) })
           );
           break;
-        case 5: // Spin
-          logoRotation.value = withSequence(
-            withTiming(logoRotation.value + 360, { duration: 800, easing: Easing.inOut(Easing.ease) }),
-            withTiming(0, { duration: 0 }) // snap back silently if needed, or leave it offset
-          );
-          break;
-        case 6: // Float
-          logoTranslateX.value = withSequence(
-            withTiming(30, { duration: 600, easing: Easing.inOut(Easing.ease) }),
-            withTiming(0, { duration: 600, easing: Easing.inOut(Easing.ease) })
-          );
-          logoTranslateY.value = withSequence(
-            withTiming(30, { duration: 600, easing: Easing.inOut(Easing.ease) }),
-            withTiming(0, { duration: 600, easing: Easing.inOut(Easing.ease) })
-          );
-          break;
-        case 7: // Pulse Shrink
+        case 2: // Holy Glow (very subtle scale down/up)
           logoScale.value = withSequence(
-            withTiming(0.85, { duration: 500, easing: Easing.inOut(Easing.ease) }),
-            withTiming(1, { duration: 500, easing: Easing.inOut(Easing.ease) })
+            withTiming(0.98, { duration: 1500, easing: Easing.inOut(Easing.ease) }),
+            withTiming(1, { duration: 1500, easing: Easing.inOut(Easing.ease) })
           );
           break;
-        case 8: // Pendulum Swing
+        case 3: // Minimal Sway (Barely rotates 2 degrees)
           logoRotation.value = withSequence(
-            withTiming(20, { duration: 300 }),
-            withTiming(-20, { duration: 300 }),
-            withTiming(10, { duration: 300 }),
-            withTiming(-10, { duration: 300 }),
-            withTiming(0, { duration: 300 })
-          );
-          logoTranslateX.value = withSequence(
-            withTiming(30, { duration: 300 }),
-            withTiming(-30, { duration: 300 }),
-            withTiming(15, { duration: 300 }),
-            withTiming(-15, { duration: 300 }),
-            withTiming(0, { duration: 300 })
-          );
-          break;
-        case 9: // Vibrate
-          logoTranslateX.value = withSequence(
-            withRepeat(withSequence(withTiming(5, { duration: 40 }), withTiming(-5, { duration: 40 })), 5, true),
-            withTiming(0, { duration: 40 })
-          );
-          logoTranslateY.value = withSequence(
-            withRepeat(withSequence(withTiming(5, { duration: 40 }), withTiming(-5, { duration: 40 })), 5, true),
-            withTiming(0, { duration: 40 })
+            withTiming(1.5, { duration: 1000, easing: Easing.inOut(Easing.ease) }),
+            withTiming(-1.5, { duration: 2000, easing: Easing.inOut(Easing.ease) }),
+            withTiming(0, { duration: 1000, easing: Easing.inOut(Easing.ease) })
           );
           break;
       }
-    }, 2500); // 2.5 seconds loop for random effects
+    }, 4000); // 4 second loops for slower, highly respectful animations
 
     return () => clearInterval(animInterval);
   }, []);
