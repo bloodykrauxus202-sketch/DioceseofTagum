@@ -106,8 +106,12 @@ export default function ParishListScreen() {
   const horizontalPadding = 8;
   const gap = 6;
   const columns = 3;
-  // Make absolutely sure our column width handles mobile subpixel margins properly for a pure 3x3 fit.
-  const gridItemWidth = (screenWidth - (horizontalPadding * 2) - (gap * (columns - 1)) - 6) / columns;
+  
+  // Track actual container width to prevent 1-column layouts on wide desktop screens constrained by max-w-7xl
+  const [containerWidth, setContainerWidth] = useState<number>(Math.min(screenWidth, 1280));
+  
+  // Exactly 3 items per row inside the perfectly measured container
+  const gridItemWidth = Math.max(0, (containerWidth - (horizontalPadding * 2) - (gap * (columns - 1)) - 6) / columns);
 
   const filteredParishes = useMemo(() => {
     let result = parishes;
@@ -246,6 +250,7 @@ export default function ParishListScreen() {
       {view === 'list' && (
         <ScrollView
           className="flex-1"
+          onLayout={(e) => setContainerWidth(e.nativeEvent.layout.width)}
           contentContainerStyle={{ padding: horizontalPadding, paddingBottom: insets.bottom + 16 }}
           showsVerticalScrollIndicator={false}
         >
@@ -258,7 +263,10 @@ export default function ParishListScreen() {
             <View className="flex-row flex-wrap" style={{ gap }}>
               {filteredParishes.map((parish, index) => {
                 const iconUrl = getParishIconUrl(parish.name, parish.location);
-                const imageSize = gridItemWidth - 16;
+                // Dynamically constrain image vertical heights specifically for phones to guarantee exactly 3 rows fit before scrolling (9 parishes per view)
+                const isMobile = screenWidth < 768;
+                const imageSize = Math.min(gridItemWidth - 16, isMobile ? 64 : 180);
+                
                 return (
                   <AnimatedPressable
                     key={parish.id}
@@ -282,12 +290,12 @@ export default function ParishListScreen() {
                         <Church size={imageSize * 0.45} color="#3b82f6" strokeWidth={1.5} />
                       </View>
                     )}
-                    <Text className="text-gray-900 text-center mt-2 leading-tight font-bold" numberOfLines={2} style={{ width: '100%', fontSize: 13 }}>
+                    <Text className="text-gray-900 text-center mt-2 leading-tight font-bold" numberOfLines={2} style={{ width: '100%', fontSize: isMobile ? 12 : 14 }}>
                       {parish.name}
                     </Text>
                     <View className="flex-row items-center mt-1" style={{ width: '100%' }}>
                       <MapPin size={9} color="#4b5563" style={{ flexShrink: 0 }} />
-                      <Text className="text-gray-600 ml-1" numberOfLines={1} style={{ flex: 1, fontSize: 11 }}>
+                      <Text className="text-gray-600 ml-1" numberOfLines={1} style={{ flex: 1, fontSize: isMobile ? 10 : 12 }}>
                         {parish.location}
                       </Text>
                     </View>

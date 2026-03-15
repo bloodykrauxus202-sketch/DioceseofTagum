@@ -42,6 +42,7 @@ export default function HomeScreen() {
   const { width: screenWidth } = useWindowDimensions();
   const { isAuthenticated, user, signOut } = useAuth();
   const [showAboutUs, setShowAboutUs] = useState<boolean>(false);
+  const [containerWidth, setContainerWidth] = useState<number>(Math.min(screenWidth, 1280));
 
   const topPadding = insets.top + 4;
   const logoSize = Math.min(screenWidth * 0.44, 176);
@@ -220,34 +221,53 @@ export default function HomeScreen() {
         </View>
 
         {/* Directory Grid */}
-        <View className="flex-row flex-wrap justify-center mt-4">
-          {items.map((item) => (
-            <Pressable
-              key={item.id}
-              onPress={() => handleDirectoryPress(item)}
-              className="active:opacity-70 active:scale-95 items-center justify-start w-1/3 md:w-1/4 lg:w-1/6 p-2 mb-4"
-            >
-              {item.uri ? (
-                <Image
-                  source={typeof item.uri === 'string' ? { uri: item.uri } : item.uri}
-                  className="w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32"
-                  resizeMode="contain"
-                />
-              ) : (
-                <View className="w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 bg-gray-100 rounded-2xl items-center justify-center border-2 border-gray-200 border-dashed">
-                  <Church size={36} color="#9ca3af" strokeWidth={1.5} />
-                </View>
-              )}
-              <Text
-                className="text-gray-700 text-sm md:text-base font-semibold text-center mt-3 leading-tight"
-                numberOfLines={2}
-                adjustsFontSizeToFit
-                minimumFontScale={0.8}
+        <View 
+          className="flex-row flex-wrap justify-center mt-4"
+          onLayout={(e) => {
+            setContainerWidth(e.nativeEvent.layout.width);
+          }}
+        >
+          {items.map((item) => {
+            // Determine column count and exact pixel sizing
+            // On Mobile: 3 columns. On Tablet: 4 columns. On Large Desktop: 6 columns.
+            const columns = screenWidth >= 1024 ? 6 : screenWidth >= 768 ? 4 : 3;
+            const itemWidth = containerWidth > 0 ? (containerWidth / columns) - 16 : 100;
+            // Cap the image size so it isn't ridiculously huge on desktop, and compress it carefully on mobile
+            const imageSize = Math.min(itemWidth * 0.8, screenWidth < 768 ? 72 : 110);
+            
+            return (
+              <Pressable
+                key={item.id}
+                onPress={() => handleDirectoryPress(item)}
+                className="active:opacity-70 active:scale-95 items-center justify-start p-2 mb-4"
+                style={{ width: containerWidth > 0 ? containerWidth / columns : '33.33%' }}
               >
-                {item.label}
-              </Text>
-            </Pressable>
-          ))}
+                {item.uri ? (
+                  <Image
+                    source={typeof item.uri === 'string' ? { uri: item.uri } : item.uri}
+                    style={{ width: imageSize, height: imageSize, marginBottom: 8 }}
+                    resizeMode="contain"
+                  />
+                ) : (
+                  <View 
+                    style={{ width: imageSize, height: imageSize, marginBottom: 8 }}
+                    className="bg-gray-100 rounded-2xl items-center justify-center border-2 border-gray-200 border-dashed"
+                  >
+                    <Church size={imageSize * 0.4} color="#9ca3af" strokeWidth={1.5} />
+                  </View>
+                )}
+                <Text
+                  className="text-gray-700 font-semibold text-center leading-tight"
+                  style={{ fontSize: screenWidth < 768 ? 12 : 14.5, width: '100%' }}
+                  numberOfLines={2}
+                  adjustsFontSizeToFit
+                  minimumFontScale={0.8}
+                >
+                  {item.label}
+                </Text>
+              </Pressable>
+            );
+          })}
         </View>
       </ScrollView>
 
