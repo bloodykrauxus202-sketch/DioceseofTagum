@@ -45,23 +45,22 @@ function generateRandomLocations(count: number, screenW: number, screenH: number
     const r1 = { x: ix, y: iy, w: iconSize, h: iconSize };
     
     const check = (r2: {x: number, y: number, w: number, h: number}) => {
-      const buffer = 12; // 12px padding around sacred objects
+      const buffer = 15; // 15px padding around sacred objects
       return !(r1.x + r1.w + buffer < r2.x || r1.x - buffer > r2.x + r2.w || r1.y + r1.h + buffer < r2.y || r1.y - buffer > r2.y + r2.h);
     };
 
-    // 1. Text Area (Top Center)
+    // 1. Text Area (Top Center) - deeply expanded to protect all lines
     const textZone = { 
-      x: screenW * 0.05, 
-      y: screenH * 0.03, 
-      w: screenW * 0.9, 
-      h: screenH * 0.30 
+      x: 0, 
+      y: 0, 
+      w: screenW, 
+      h: screenH * 0.50 
     };
     if (check(textZone)) return true;
 
     // 2. Center Logo
     const logoSize = Math.min(screenW * 0.85, screenH * 0.75);
-    // Use 75% of logoSize for collision since the PNG is a circle with transparent corners
-    const hitSize = logoSize * 0.75;
+    const hitSize = logoSize * 0.85;
     const logoZone = {
       x: (screenW - hitSize) / 2,
       y: (screenH - hitSize) / 2,
@@ -73,9 +72,9 @@ function generateRandomLocations(count: number, screenW: number, screenH: number
     // 3. Bottom Button
     const btnZone = {
       x: screenW * 0.1,
-      y: screenH - 120,
+      y: screenH - 160,
       w: screenW * 0.8,
-      h: 100
+      h: 160
     };
     if (check(btnZone)) return true;
 
@@ -97,7 +96,7 @@ function generateRandomLocations(count: number, screenW: number, screenH: number
     let valid = false;
     let px = -10, py = -10; // If impossible to place safely, throw off-screen
 
-    while (!valid && attempts < 300) {
+    while (!valid && attempts < 500) {
       const testX = Math.random();
       const testY = Math.random();
       if (!isOverlap(testX, testY)) {
@@ -159,7 +158,7 @@ function AnimatedIcon({
           opacity.value = withTiming(0, { duration: 500 });
         });
       });
-      opacity.value = withTiming(1, { duration: 500 });
+      opacity.value = withTiming(0.2, { duration: 500 });
     }, delay);
 
     return () => clearTimeout(timeout);
@@ -227,7 +226,7 @@ export default function WelcomeScreen() {
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
 
   const logoSize = Math.min(screenWidth * 0.85, screenHeight * 0.75);
-  const iconSize = Math.min(screenWidth * 0.16, 75);
+  const iconSize = Math.min(screenWidth * 0.12, 55);
 
   const logoCenter = { x: screenWidth / 2, y: screenHeight / 2 };
 
