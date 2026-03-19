@@ -210,9 +210,9 @@ export default function SchoolsListScreen() {
           </Text>
 
           {filteredSchools.map((school, index) => (
-            <Animated.View
+            <View
               key={school.id}
-              entering={FadeInDown.delay(index * 50).duration(300)}
+              className="mb-3"
             >
               <Pressable
                 onPress={() => router.push(`/schools/${school.id}`)}
@@ -254,7 +254,7 @@ export default function SchoolsListScreen() {
                   <ChevronRight size={22} color="#9ca3af" />
                 </View>
               </Pressable>
-            </Animated.View>
+            </View>
           ))}
 
           {/* Footer */}

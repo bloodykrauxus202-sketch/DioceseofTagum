@@ -42,9 +42,6 @@ export default function DesktopTopNav() {
         <Pressable onPress={() => router.push('/parishes')} className="cursor-pointer hover:text-blue-800">
           <Text className="text-gray-700 text-base font-medium">Parishes</Text>
         </Pressable>
-        <Pressable onPress={() => router.push('/clergy')} className="cursor-pointer hover:text-blue-800">
-          <Text className="text-gray-700 text-base font-medium">Clergy</Text>
-        </Pressable>
 
         {/* Search */}
         <Pressable

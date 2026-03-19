@@ -26,7 +26,6 @@ const WELCOME_IMAGE_URL = 'https://lh7-rt.googleusercontent.com/sheetsz/AHOq17Go
 const ORBIT_ICONS = [
   { id: 1, uri: 'https://images.composerapi.com/019c1d10-9a1d-732f-93cc-606c5e55b508/assets/images/parish_1770014167055_019c1d10-d00f-743e-a987-237debd39276.png', label: 'Parish' },
   { id: 2, uri: 'https://images.composerapi.com/019c1d10-9a1d-732f-93cc-606c5e55b508/assets/images/bec_1770014166604_019c1d10-ce4c-73ec-8b14-ec53d8ae6ec8.png', label: 'BEC' },
-  { id: 3, uri: 'https://images.composerapi.com/019c1d10-9a1d-732f-93cc-606c5e55b508/assets/images/priest_1770014167003_019c1d10-cfdb-719a-b148-69972e03d671.png', label: 'Clergy' },
   { id: 4, uri: 'https://images.composerapi.com/019c1d10-9a1d-732f-93cc-606c5e55b508/assets/images/ministry_1770014167002_019c1d10-cfda-72db-b606-9deae6c8ee12.png', label: 'Ministry' },
   { id: 5, uri: 'https://images.composerapi.com/019c1d10-9a1d-732f-93cc-606c5e55b508/assets/images/dclaim_1770014166994_019c1d10-cfd2-772d-981c-517adc3d0e45.png', label: 'DClaim' },
   { id: 6, uri: 'https://images.composerapi.com/019c1d10-9a1d-732f-93cc-606c5e55b508/assets/images/vicariate_1770014167009_019c1d10-cfe1-7288-9416-914e3b6e55aa.png', label: 'Vicariate' },

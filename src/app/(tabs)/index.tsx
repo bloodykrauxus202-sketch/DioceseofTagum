@@ -14,7 +14,6 @@ const DIRECTORY_ITEMS = [
   // Row 1
   { id: 1, uri: 'https://images.composerapi.com/019c1d10-9a1d-732f-93cc-606c5e55b508/assets/images/parish_1770014167055_019c1d10-d00f-743e-a987-237debd39276.png', label: 'Parishes' },
   { id: 2, uri: 'https://images.composerapi.com/019c1d10-9a1d-732f-93cc-606c5e55b508/assets/images/bec_1770014166604_019c1d10-ce4c-73ec-8b14-ec53d8ae6ec8.png', label: 'BECs/GKKs' },
-  { id: 3, uri: 'https://images.composerapi.com/019c1d10-9a1d-732f-93cc-606c5e55b508/assets/images/priest_1770014167003_019c1d10-cfdb-719a-b148-69972e03d671.png', label: 'Clergy' },
   // Row 2
   { id: 4, uri: 'https://images.composerapi.com/019c1d10-9a1d-732f-93cc-606c5e55b508/assets/images/vicariate_1770014167009_019c1d10-cfe1-7288-9416-914e3b6e55aa.png', label: 'Vicariates' },
   { id: 5, uri: 'https://images.composerapi.com/019c1d10-9a1d-732f-93cc-606c5e55b508/assets/images/dclaim_1770014166994_019c1d10-cfd2-772d-981c-517adc3d0e45.png', label: 'DCLAIM' },
@@ -51,8 +50,6 @@ export default function HomeScreen() {
     console.log(`Pressed: ${item.label}`);
     if (item.label === 'Parishes') {
       router.push('/parishes');
-    } else if (item.label === 'Clergy') {
-      router.push('/clergy');
     } else if (item.label === 'Vicariates') {
       router.push('/vicariates');
     } else if (item.label === 'BECs/GKKs') {

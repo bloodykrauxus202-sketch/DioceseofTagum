@@ -127,8 +127,7 @@ export default function SchoolDetailScreen() {
         >
           <View className="px-4 py-6">
             {/* School Name & Level */}
-            <Animated.View
-              entering={FadeInDown.delay(100)}
+            <View
               className="bg-white rounded-2xl p-6 mb-4"
             >
               <Text className="text-3xl font-bold text-gray-900 text-center mb-3">
@@ -141,9 +140,8 @@ export default function SchoolDetailScreen() {
                   </Text>
                 </View>
               </View>
-            </Animated.View>          {/* Administration Section */}
-          <Animated.View
-            entering={FadeInDown.delay(100)}
+            </View>          {/* Administration Section */}
+          <View
             className="bg-white rounded-2xl p-5 mb-4"
             style={{ borderLeftWidth: 4, borderLeftColor: school.color }}
           >
@@ -178,11 +176,10 @@ export default function SchoolDetailScreen() {
                 </View>
               )}
             </View>
-          </Animated.View>
+          </View>
 
           {/* Location - Tappable for directions */}
-          <Animated.View
-            entering={FadeInDown.delay(200)}
+          <View
             className="bg-white rounded-2xl overflow-hidden mb-4"
           >
             <Pressable
@@ -207,11 +204,10 @@ export default function SchoolDetailScreen() {
             </Pressable>
             
 
-          </Animated.View>
+          </View>
 
           {/* Contact Card */}
-          <Animated.View
-            entering={FadeInDown.delay(300)}
+          <View
             className="bg-white rounded-2xl overflow-hidden mb-4"
           >
             {/* Email */}
@@ -252,10 +248,10 @@ export default function SchoolDetailScreen() {
                 </View>
               </Pressable>
             )}
-          </Animated.View>
+          </View>
 
           {/* Schedule of Events - Clickable */}
-          <Animated.View entering={FadeInDown.delay(400)}>
+          <View>
             <Pressable
               onPress={handleSchedulePress}
               className="bg-white rounded-2xl p-5 mb-4 active:bg-gray-50"
@@ -273,11 +269,10 @@ export default function SchoolDetailScreen() {
                 <ChevronRight size={22} color="#9ca3af" />
               </View>
             </Pressable>
-          </Animated.View>
+          </View>
 
           {/* Founding Anniversary */}
-          <Animated.View
-            entering={FadeInDown.delay(500)}
+          <View
             className="bg-white rounded-2xl p-5 mb-4"
           >
             <View className="flex-row">
@@ -291,11 +286,10 @@ export default function SchoolDetailScreen() {
                 </Text>
               </View>
             </View>
-          </Animated.View>
+          </View>
 
           {/* Patron Saint */}
-          <Animated.View
-            entering={FadeInDown.delay(600)}
+          <View
             className="bg-white rounded-2xl p-5 mb-4"
           >
             <View className="flex-row">
@@ -309,11 +303,10 @@ export default function SchoolDetailScreen() {
                 </Text>
               </View>
             </View>
-          </Animated.View>
+          </View>
 
           {/* Mission */}
-          <Animated.View
-            entering={FadeInDown.delay(700)}
+          <View
             className="bg-white rounded-2xl p-5 mb-4"
           >
             <View className="flex-row">
@@ -332,11 +325,10 @@ export default function SchoolDetailScreen() {
                 )}
               </View>
             </View>
-          </Animated.View>
+          </View>
 
           {/* History */}
-          <Animated.View
-            entering={FadeInDown.delay(800)}
+          <View
             className="bg-white rounded-2xl p-5 mb-4"
           >
             <View className="flex-row">
@@ -350,11 +342,10 @@ export default function SchoolDetailScreen() {
                 </Text>
               </View>
             </View>
-          </Animated.View>
+          </View>
 
           {/* Category Badge */}
-          <Animated.View
-            entering={FadeInDown.delay(900)}
+          <View
             className="rounded-2xl p-5 border"
             style={{
               backgroundColor: school.color + '10',
@@ -373,7 +364,7 @@ export default function SchoolDetailScreen() {
             <Text className="text-base text-gray-600 mt-1">
               Est. {school.foundingYear}
             </Text>
-          </Animated.View>
+          </View>
           </View>
         </ScrollView>
       </View>
